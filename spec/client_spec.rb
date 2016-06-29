@@ -126,6 +126,17 @@ module RailsEventStore
       client.publish_event(event_2)
       expect(handled_events).to eq [event_1]
       expect(result).to respond_to(:call)
+
+      puts client.read_all_streams_forward(:head, 10)
+        .map(&:timestamp)
+        .map(&:to_f)
+        .inspect
+
+      puts [event_1, event_2]
+        .map(&:timestamp)
+        .map(&:to_f)
+        .inspect
+
       expect(client.read_all_streams_forward(:head, 10)).to eq([event_1, event_2])
     end
   end
